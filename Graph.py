@@ -74,7 +74,6 @@ class Graph:
         
         v = self.adjacent_Search(vert)  # return only not visited or null        
         while v is not None:
-            v.predecessor.append(vert.getId())
             self.visit(v)
             v = self.adjacent_Search(vert)
     
