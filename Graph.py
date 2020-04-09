@@ -6,11 +6,15 @@ class Graph:
     def __init__(self):
         self.list_vertices = []
         self.list_edges = []
+        self.list_path = []
 
     # Receive an integer
     def add_vertice(self, identifier):
         self.list_vertices.append(Vertice(identifier))
 
+    # Receive an integer and heuristic
+    def add_vertice_heuristic(self, identifier, heuristic):
+        self.list_vertices.append(Vertice(identifier, heuristic))
         
     # Receive an integer
     def find_vertice(self, Id):
@@ -66,6 +70,26 @@ class Graph:
         for v in self.list_vertices:
             if not v.getVisited():
                 self.visit(v)
+
+    def Greedy_search(self, node, target):
+        cheaper = 999
+        node.setVisited(True)
+        self.list_path.append(node)
+
+        for i in range(len(self.list_edges)):
+            origin = self.list_edges[i].getOrigin()
+            destination = self.list_edges[i].getDestination()
+
+            if (node.getId() == origin.getId()) and (destination.getVisited() == False):
+                if (destination.getHeuristic() < cheaper):
+                    next_node = destination
+                    cheaper = destination.getHeuristic()
+
+        if (next_node == target):
+            self.list_path.append(next_node)
+            return 0
+        else:
+            self.Greedy_search(next_node, target)    
 
     def visit(self, vert):
         print("Visiting vertice: %s" % vert.getId())
